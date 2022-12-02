@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: garvey
+    env: python
+    repo: https://github.com/getmagistrate/garvey.git
+    region: ohio
+    plan: starter
+    buildCommand: "make build"
+    startCommand: "make daemon"
+    envVars:
+      - key: ZULIP_BOT_KEY
+        sync: false
