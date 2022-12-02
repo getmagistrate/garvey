@@ -26,7 +26,7 @@ BOT_ADMINS = (
     "harry@getmagistrate.com",
 ) 
 
-CHATROOM_PRESENCE = ()
+CHATROOM_PRESENCE = ("engineering",)
 BOT_PREFIX = '!'
 
 HIDE_RESTRICTED_COMMANDS = True

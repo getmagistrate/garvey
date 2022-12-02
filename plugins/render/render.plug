@@ -1,0 +1,9 @@
+[Core]
+Name = Render
+Module = render
+
+[Documentation]
+Description = This lets one interact with Magistrate's primary hosting provider, render.com.
+
+[Python]
+Version = 3

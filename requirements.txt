@@ -1,3 +1,4 @@
 errbot
 python-dotenv
+requests
 zulip
