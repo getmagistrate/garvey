@@ -20,24 +20,19 @@ class Render(BotPlugin):
         }
         response = requests.get(url, headers=headers)
         data = response.json()
-        if data["status"] in ("live", "deactivated", "build_failed", "update_failed", "canceled"):
+        if response.status_code != 200:
             self.stop_poller(self.poll_deploy, args=(service_id, service_name, deploy_id))
-            self.send(self.topic, f"Render deploy **{deploy_id}** for service **{service_name}** finished with status {data['status']}.")
+            message = f"Render deploy for service **{service_name}** with deploy id `{deploy_id}` had an **error** while polling for its status: {data['message']}."
+            self.send(self.topic, message)
 
-        # FIXME handle errors
-        # FIXME say who initiated the deployment
-        # FIXME stop the github deployment
+        elif data["status"] not in ("created", "build_in_progress", "update_in_progress"):
+            self.stop_poller(self.poll_deploy, args=(service_id, service_name, deploy_id))
+            message = f"Render deploy for service **{service_name}** with deploy id `{deploy_id}` finished with status `{data['status']}`."
+            self.send(self.topic, message)
 
-    @botcmd
-    def deploy_celery(self, msg, args):
-        """
-        Deploys the magistrate/main branch to production on Render
-        to the magistrate-prod-celery service.
-        """
-        service_id = "srv-ca1ac5r97ejf9sopna10"
-        service_name = "magistrate-prod-celery"
+
+    def _deploy(self, msg, service_id, service_name):
         url = f"https://api.render.com/v1/services/{service_id}/deploys"
-
         payload = {"clearCache": "do_not_clear"}
         headers = {
             "authorization": "Bearer " + os.environ["RENDER_API_KEY"],
@@ -50,9 +45,20 @@ class Render(BotPlugin):
             return f"The deploy failed for the following reason: {data['message']}"
 
         self.start_poller(10, self.poll_deploy, times=100, args=(service_id, service_name, data['id']))
-        message = f"Render deploy **{data['id']}** for service **{service_name}** initiated (status: {data['status']})."
+        message = f"Render deploy for service **{service_name}** initiated with deploy id `{data['id']}` and status `{data['status']}`. Initiator was @**{msg.frm.fullname}."
+        
         if msg.to == self.topic:
             return message
         else:
             self.send(self.topic, message)
-            return "OK. See #engineering for status updates."
+            return "OK. See #**engineering>news** for status updates."
+
+    @botcmd
+    def deploy_celery(self, msg, args):
+        """
+        Deploys the magistrate/main branch to production on Render
+        to the magistrate-prod-celery service.
+        """
+        service_id = "srv-ca1ac5r97ejf9sopna10"
+        service_name = "magistrate-prod-celery"
+        return self._deploy(msg, service_id, service_name)
