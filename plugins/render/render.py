@@ -45,7 +45,7 @@ class Render(BotPlugin):
             return f"The deploy failed for the following reason: {data['message']}"
 
         self.start_poller(10, self.poll_deploy, times=100, args=(service_id, service_name, data['id']))
-        message = f"Render deploy for service **{service_name}** initiated with deploy id `{data['id']}` and status `{data['status']}`. Initiator was @**{msg.frm.fullname}."
+        message = f"Render deploy for service **{service_name}** initiated with deploy id `{data['id']}` and status `{data['status']}`. Initiator was @**{msg.frm.fullname}**."
         
         if msg.to == self.topic:
             return message
@@ -54,11 +54,15 @@ class Render(BotPlugin):
             return "OK. See #**engineering>news** for status updates."
 
     @botcmd
+    def deploy_web(self, msg, args):
+        """Deploys the magistrate/main branch to production on Render to the magistrate-prod-web service."""
+        service_id = os.environ["RENDER_WEB_SERVICE_ID"]
+        service_name = "magistrate-prod-web"
+        return self._deploy(msg, service_id, service_name)
+
+    @botcmd
     def deploy_celery(self, msg, args):
-        """
-        Deploys the magistrate/main branch to production on Render
-        to the magistrate-prod-celery service.
-        """
-        service_id = "srv-ca1ac5r97ejf9sopna10"
+        """Deploys the magistrate/main branch to production on Render to the magistrate-prod-celery service."""
+        service_id = os.environ["RENDER_CELERY_SERVICE_ID"]
         service_name = "magistrate-prod-celery"
         return self._deploy(msg, service_id, service_name)
