@@ -10,12 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent
 BACKEND = "Zulip"
 BOT_EXTRA_BACKEND_DIR = str(BASE_DIR / 'backend-zulip')
 BOT_EXTRA_PLUGIN_DIR = str(BASE_DIR / "plugins")
-
-try:
-  # We only need to specify a directory in prod bc we have a special persistent disk.
-  BOT_DATA_DIR = os.environ["BOT_DATA_DIR"]
-except KeyError:
-  BOT_DATA_DIR = str(BASE_DIR / "data")
+BOT_DATA_DIR = str(BASE_DIR / "data")
 
 BOT_LOG_FILE = None  # Console-only
 BOT_LOG_LEVEL = logging.INFO

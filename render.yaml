@@ -10,8 +10,6 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.8.10"
-      - key: BOT_DATA_DIR
-        value: /opt/garvey-data
       - key: ZULIP_BOT_KEY
         sync: false
       - key: RENDER_API_KEY
@@ -26,7 +24,3 @@ services:
         value: 80
       - key: WEBSERVER_HTTPS_PORT
         value: 443
-    disk:
-      name: garvey-data
-      mountPath: /opt/garvey-data
-      sizeGB: 1
