@@ -5,9 +5,11 @@ services:
     repo: https://github.com/getmagistrate/garvey.git
     region: ohio
     plan: starter
-    buildCommand: "make build"
+    buildCommand: "make build && mkdir -p /opt/garvey-disk/data"
     startCommand: "make daemon"
     envVars:
+      - key: BOT_DATA_DIR
+        value: /opt/garvey-disk/data
       - key: ZULIP_BOT_KEY
         sync: false
       - key: RENDER_API_KEY
@@ -18,3 +20,7 @@ services:
         sync: false
       - key: PLAINHOOK_BASE_URL
         sync: false
+    disk:
+      name: garvey-disk
+      mountPath: /opt/garvey-disk
+      sizeGB: 1
