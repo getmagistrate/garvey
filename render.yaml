@@ -5,8 +5,8 @@ services:
     repo: https://github.com/getmagistrate/garvey.git
     region: ohio
     plan: starter
-    buildCommand: "make build"
-    startCommand: "errbot"
+    buildCommand: "make all"
+    startCommand: "make run"
     envVars:
       - key: PYTHON_VERSION
         value: "3.8.10"
@@ -22,6 +22,10 @@ services:
         sync: false
       - key: PLAINHOOK_BASE_URL
         sync: false
+      - key: WEBSERVER_HTTP_PORT
+        value: 80
+      - key: WEBSERVER_HTTPS_PORT
+        value: 443
     disk:
       name: garvey-data
       mountPath: /opt/garvey-data
