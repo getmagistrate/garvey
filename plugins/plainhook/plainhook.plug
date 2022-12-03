@@ -1,0 +1,9 @@
+[Core]
+Name = Plainhook
+Module = plainhook
+
+[Documentation]
+Description = This plugin allows services to POST to a webhook and have the message passed through to a channel.
+
+[Python]
+Version = 3
