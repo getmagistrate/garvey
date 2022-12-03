@@ -8,6 +8,8 @@ services:
     buildCommand: "make build && mkdir -p /opt/garvey-disk/data"
     startCommand: "make daemon"
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.10.8"
       - key: BOT_DATA_DIR
         value: /opt/garvey-disk/data
       - key: ZULIP_BOT_KEY
