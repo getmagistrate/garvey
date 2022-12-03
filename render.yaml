@@ -6,7 +6,7 @@ services:
     region: ohio
     plan: starter
     buildCommand: "make build"
-    startCommand: "make daemon"
+    startCommand: "errbot"
     envVars:
       - key: PYTHON_VERSION
         value: "3.10.8"
