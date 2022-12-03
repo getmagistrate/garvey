@@ -9,7 +9,7 @@ services:
     startCommand: "errbot"
     envVars:
       - key: PYTHON_VERSION
-        value: "3.10.8"
+        value: "3.8.10"
       - key: BOT_DATA_DIR
         value: /opt/garvey-data
       - key: ZULIP_BOT_KEY
